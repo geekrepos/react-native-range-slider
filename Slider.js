@@ -43,10 +43,14 @@ class Slider extends Component{
             },
             onPanResponderMove: (event,gestureState)=>{
                 let {_offset, _value, _startingValue} = this.state.minPan.x;
+                console.log("MX:",gestureState.moveX-this.state.sliderPosition.x-4)
                 if(gestureState.dx>0){
+                    console.log("PERC: ",((gestureState.moveX-this.state.sliderPosition.x-4)).toFixed(2) + "%");
                     Animated.event([null, {dx: this.state.minPan.x}])(event,gestureState)
                     this.setState({min: Math.floor(_offset+_value)})
                 } else if(_offset+_value>_startingValue) {
+                    console.log("PERC: ",((gestureState.moveX-this.state.sliderPosition.x-4)).toFixed(2) + "%");
+                    // console.log("PERC: ",(((gestureState.moveX+(this.pointerSize/2)-this.state.sliderPosition.x-8)/this.state.sliderPosition.width-8)*100).toFixed(2) + "%");
                     Animated.event([null, {dx: this.state.minPan.x}])(event,gestureState)
                     this.setState({min: Math.floor(_offset+_value)})
                 }
@@ -93,6 +97,7 @@ class Slider extends Component{
         return (
             <SafeAreaView style={{flex:1}}>
                 <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                    <View style={{height:10,backgroundColor:'green', alignSelf:'flex-start',width:106.17587280273438}}/>
                     <View
                         onLayout={({nativeEvent})=>this.setState({
                             sliderPosition: nativeEvent.layout
@@ -124,13 +129,15 @@ class Slider extends Component{
                             </Animated.View>
                         </View>
                         <View
-                            style={{marginBottom:100,borderRadius:10,width:width*0.5, height:10, backgroundColor:'grey', flexDirection:'row'}}>
-                            <View  style={{width:this.state.min+10, height:10,backgroundColor:'red'}}/>
+                            style={{
+                                paddingHorizontal:8,borderRadius:10,width:width*0.5, height:10, backgroundColor:'rgba(255,255,255,0)', flexDirection:'row'}}>
+                            <View  style={{width:this.state.min, height:10,backgroundColor:'red'}}/>
                             <View  style={{flex:1, height:10,backgroundColor:'green'}}/>
                             <View  style={{width:this.state.sliderMax-this.state.max+10, height:10,backgroundColor:'blue'}}/>
                         </View>
                     </View>
                 </View>
+
                 <View>
                     <Text>Min Price: {this.state.min}</Text>
                     <Text>Max Price: {this.state.max}</Text>
